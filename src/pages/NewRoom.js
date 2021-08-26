@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { Button } from '../components/Button';
 
 import '../styles/auth.scss';
@@ -9,6 +9,24 @@ import { useAuth } from '../hooks/useAuth';
 
 const NewRoom = () => {
   const {user} = useAuth();
+  const [newRoom, setNewRoom] = useState('');
+  const history = useHistory();
+
+  const handleCreateRoom = (e) => {
+    e.preventDefault();
+
+    if(newRoom.trim() === '') 
+      return
+
+    const roomRef = database.ref('rooms');
+
+    const firebaseRoom = await roomRef.push({
+      title: newRoom,
+      authorId: user?.id,
+    })
+
+    history.push(`/rooms/${firebaseRoom.key}`);
+  }
 
   return (
     <div id="page-auth">
@@ -21,10 +39,12 @@ const NewRoom = () => {
         <div className="main-content">
           <img src={logoImg} alt="LetMe Ask" />
           <h2>Criar uma nova sala</h2>
-          <form>
+          <form onSubmit={handleCreateRoom}>
             <input 
               type="text"
               placeholder="digite o nome da sala"
+              onChange={e => setNewRoom(e.target.value)}
+              value={newRoom}
             />
             <Button type="submit">Criar sala</Button>
           </form>
