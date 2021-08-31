@@ -27,15 +27,17 @@ const Home = () => {
   const handleJoinRoom = async (e) => {
     e.preventDefault();
 
-    if(roomCode.trim === '')
+    if (roomCode.trim === '')
       return
-    
+    console.log("dentro do handlejoin");
     const roomRef = await database.ref(`rooms/${roomCode}`).get();
 
-    if(!roomRef.exists()) {
+    if (!roomRef.exists()) {
       alert("Room does not exists.");
       return
     }
+   
+    history.push(`/rooms/${roomCode}`);
   }
 
   return (

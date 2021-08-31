@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button } from '../components/Button';
 
+import { database } from '../services/firebase';
+
 import '../styles/auth.scss';
 import illustrationImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
@@ -12,7 +14,7 @@ const NewRoom = () => {
   const [newRoom, setNewRoom] = useState('');
   const history = useHistory();
 
-  const handleCreateRoom = (e) => {
+  const handleCreateRoom = async (e) => {
     e.preventDefault();
 
     if(newRoom.trim() === '') 
